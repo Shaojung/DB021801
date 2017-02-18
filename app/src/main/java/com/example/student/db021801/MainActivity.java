@@ -14,12 +14,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
+public class MainActivity extends AppCompatActivity {
+    ArrayList<Zoo> mylist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mylist = new ArrayList();
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         StringRequest request = new StringRequest(
                 "http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=5a0e5fbb-72f8-41c6-908e-2fb25eff9b8a",
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
                             {
                                 JSONObject item = array.getJSONObject(i);
                                 Log.d("NET", item.getString("E_Name"));
+                                mylist.add(new Zoo(item.getString("E_Name"), item.getString("E_Pic_URL")));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
