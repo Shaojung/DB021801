@@ -3,6 +3,7 @@ package com.example.student.db021801;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,11 +19,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<Zoo> mylist;
+    ListView lv;
+    MyAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mylist = new ArrayList();
+        lv = (ListView) findViewById(R.id.listView);
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         StringRequest request = new StringRequest(
                 "http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=5a0e5fbb-72f8-41c6-908e-2fb25eff9b8a",
@@ -40,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d("NET", item.getString("E_Name"));
                                 mylist.add(new Zoo(item.getString("E_Name"), item.getString("E_Pic_URL")));
                             }
+                            adapter = new MyAdapter(MainActivity.this, mylist);
+                            lv.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -55,5 +61,6 @@ public class MainActivity extends AppCompatActivity {
         );
         queue.add(request);
         queue.start();
+
     }
 }

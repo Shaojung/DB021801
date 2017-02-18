@@ -1,9 +1,11 @@
 package com.example.student.db021801;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -22,7 +24,7 @@ public class MyAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        return 0;
+        return data.size();
     }
 
     @Override
@@ -37,6 +39,10 @@ public class MyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View v = inflater.inflate(R.layout.myitem, null);
+        TextView tv = (TextView) v.findViewById(R.id.textView2);
+        tv.setText(data.get(position).E_Name);
+        return v;
     }
 }
