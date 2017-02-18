@@ -14,6 +14,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -61,22 +62,8 @@ public class MyAdapter extends BaseAdapter {
         {
             holder = (ViewHolder) convertView.getTag();
         }
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        ImageRequest request = new ImageRequest(data.get(position).img_url,
-                new Response.Listener<Bitmap>() {
-                    @Override
-                    public void onResponse(Bitmap response) {
-                        holder.img.setImageBitmap(response);
-                    }
-                }, 0, 0, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-        queue.add(request);
-        queue.start();
+        holder.img.setImageResource(R.mipmap.ic_launcher);
+        Picasso.with(context).load(data.get(position).img_url).into(holder.img);
         holder.tv.setText(data.get(position).E_Name);
         return convertView;
     }
