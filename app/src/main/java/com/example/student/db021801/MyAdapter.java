@@ -48,15 +48,26 @@ public class MyAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View v = inflater.inflate(R.layout.myitem, null);
-        TextView tv = (TextView) v.findViewById(R.id.textView2);
-        final ImageView img = (ImageView) v.findViewById(R.id.imageView);
+        final ViewHolder holder;
+        if (convertView == null)
+        {
+            convertView = inflater.inflate(R.layout.myitem, null);
+            holder = new ViewHolder();
+            holder.tv = (TextView) convertView.findViewById(R.id.textView2);
+            holder.img = (ImageView) convertView.findViewById(R.id.imageView);
+            convertView.setTag(holder);
+        }
+        else
+        {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
         RequestQueue queue = Volley.newRequestQueue(context);
         ImageRequest request = new ImageRequest(data.get(position).img_url,
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap response) {
-                        img.setImageBitmap(response);
+                        holder.img.setImageBitmap(response);
                     }
                 }, 0, 0, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565, new Response.ErrorListener() {
             @Override
@@ -66,7 +77,12 @@ public class MyAdapter extends BaseAdapter {
         });
         queue.add(request);
         queue.start();
-        tv.setText(data.get(position).E_Name);
-        return v;
+        holder.tv.setText(data.get(position).E_Name);
+        return convertView;
+    }
+    static class ViewHolder
+    {
+        TextView tv;
+        ImageView img;
     }
 }
